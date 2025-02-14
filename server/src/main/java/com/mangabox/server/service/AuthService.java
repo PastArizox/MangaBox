@@ -1,4 +1,4 @@
-package com.mangabox.server.controller;
+package com.mangabox.server.service;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;

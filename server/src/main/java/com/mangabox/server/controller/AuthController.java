@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.mangabox.server.dto.AuthResponse;
 import com.mangabox.server.dto.RegisterRequest;
+import com.mangabox.server.service.AuthService;
 
 import lombok.RequiredArgsConstructor;
 
