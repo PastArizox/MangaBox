@@ -4,7 +4,11 @@ import java.time.LocalDateTime;
 
 import org.springframework.http.HttpStatus;
 
+import lombok.Getter;
+
+@Getter
 public class ApiError {
+
     private LocalDateTime timestamp;
     private int status;
     private String error;
@@ -17,19 +21,4 @@ public class ApiError {
         this.message = message;
     }
 
-    public LocalDateTime getTimestamp() {
-        return timestamp;
-    }
-
-    public int getStatus() {
-        return status;
-    }
-
-    public String getError() {
-        return error;
-    }
-
-    public String getMessage() {
-        return message;
-    }
 }
