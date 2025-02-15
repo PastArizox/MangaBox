@@ -2,6 +2,7 @@ package com.mangabox.server.security;
 
 import java.util.Date;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import io.jsonwebtoken.Jwts;
@@ -10,8 +11,13 @@ import io.jsonwebtoken.SignatureAlgorithm;
 @Component
 public class JwtUtils {
 
-    private final String SECRET_KEY = "secret";
-    private final long EXPIRATION_DATE = 1000 * 60 * 60 * 24; // 24 hours
+    private final String SECRET_KEY;
+    private final long EXPIRATION_DATE;
+
+    public JwtUtils(@Value("${jwt.secret}") String secretKey, @Value("${jwt.expiration}") long expirationDate) {
+        this.SECRET_KEY = secretKey;
+        this.EXPIRATION_DATE = expirationDate;
+    }
 
     public String generateToken(String username) {
         return Jwts.builder()
