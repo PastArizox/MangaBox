@@ -10,6 +10,7 @@ import com.mangabox.server.dto.AuthResponse;
 import com.mangabox.server.dto.RegisterRequest;
 import com.mangabox.server.service.AuthService;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -20,7 +21,7 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping(value = "/register", produces = { "application/json" })
-    public ResponseEntity<AuthResponse> register(@RequestBody RegisterRequest request) {
+    public ResponseEntity<AuthResponse> register(@Valid @RequestBody RegisterRequest request) {
         return ResponseEntity.ok(authService.register(request));
     }
 }
