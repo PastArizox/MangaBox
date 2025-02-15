@@ -8,7 +8,7 @@ import com.mangabox.server.dto.RegisterRequest;
 import com.mangabox.server.entity.User;
 import com.mangabox.server.exception.UserAlreadyExistsException;
 import com.mangabox.server.repository.UserRepository;
-import com.mangabox.server.security.JwUtils;
+import com.mangabox.server.security.JwtUtils;
 
 import lombok.RequiredArgsConstructor;
 
@@ -18,7 +18,7 @@ public class AuthService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-    private final JwUtils jwUtils;
+    private final JwtUtils jwUtils;
 
     public AuthResponse register(RegisterRequest request) {
         if (userRepository.existsByUsername(request.getUsername())) {

@@ -8,7 +8,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
 @Component
-public class JwUtils {
+public class JwtUtils {
 
     private final String SECRET_KEY = "secret";
     private final long EXPIRATION_DATE = 1000 * 60 * 60 * 24; // 24 hours
