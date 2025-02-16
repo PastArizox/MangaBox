@@ -15,7 +15,7 @@ public class GlobalExceptionHandler {
         ApiError errorResponse = new ApiError(HttpStatus.CONFLICT, ex.getMessage());
 
         return ResponseEntity
-                .status(HttpStatus.CONFLICT)
+                .status(errorResponse.getStatus())
                 .body(errorResponse);
     }
 
