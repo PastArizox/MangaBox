@@ -87,7 +87,7 @@ This project is licensed under the **MIT License**.
 ## **TODO**
 
 - [x] Create user account
-- [ ] Connect to user account
+- [x] Connect to user account
 - [ ] Modify user account
 - [ ] Delete user account
 - [ ] Password recovery
