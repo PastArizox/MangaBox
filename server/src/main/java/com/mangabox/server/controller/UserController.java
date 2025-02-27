@@ -7,6 +7,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.mangabox.server.dto.UserResponse;
+import com.mangabox.server.entity.User;
+import com.mangabox.server.service.UserService;
+
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -14,9 +18,14 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class UserController {
 
+    private UserService userService;
+
     @GetMapping(value = "/{id}", produces = { MediaType.APPLICATION_JSON_VALUE })
-    public ResponseEntity<String> get(@PathVariable Long id) {
-        return ResponseEntity.ok("Get user endpoint");
+    public ResponseEntity<UserResponse> get(@PathVariable Long id) {
+        User user = userService.get(id);
+        UserResponse response = new UserResponse(user);
+
+        return ResponseEntity.ok(response);
     }
 
 }
