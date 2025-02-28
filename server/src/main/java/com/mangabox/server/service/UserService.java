@@ -1,5 +1,7 @@
 package com.mangabox.server.service;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 import com.mangabox.server.entity.User;
@@ -12,7 +14,14 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class UserService {
 
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
+
+    public List<User> get() {
+        List<User> users = userRepository
+                .findAll();
+
+        return users;
+    }
 
     public User get(Long id) {
         User user = userRepository

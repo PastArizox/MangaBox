@@ -1,5 +1,7 @@
 package com.mangabox.server.controller;
 
+import java.util.List;
+
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,7 +20,19 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class UserController {
 
-    private UserService userService;
+    private final UserService userService;
+
+    @GetMapping(value = "/", produces = { MediaType.APPLICATION_JSON_VALUE })
+    public ResponseEntity<List<UserResponse>> get() {
+        List<User> users = userService.get();
+
+        List<UserResponse> userResponses = users
+                .stream()
+                .map(UserResponse::new)
+                .toList();
+
+        return ResponseEntity.ok(userResponses);
+    }
 
     @GetMapping(value = "/{id}", produces = { MediaType.APPLICATION_JSON_VALUE })
     public ResponseEntity<UserResponse> get(@PathVariable Long id) {
