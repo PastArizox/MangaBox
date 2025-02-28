@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import com.mangabox.server.exception.UserAlreadyExistsException;
+import com.mangabox.server.exception.UserNotFoundException;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -40,6 +41,15 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(BadCredentialsException.class)
     public ResponseEntity<ApiError> handleBadCredentialsException(BadCredentialsException ex) {
         ApiError errorResponse = new ApiError(HttpStatus.UNAUTHORIZED, ex.getMessage());
+
+        return ResponseEntity
+                .status(errorResponse.getStatus())
+                .body(errorResponse);
+    }
+
+    @ExceptionHandler(UserNotFoundException.class)
+    public ResponseEntity<ApiError> handleUserNotFoundException(UserNotFoundException ex) {
+        ApiError errorResponse = new ApiError(HttpStatus.NOT_FOUND, ex.getMessage());
 
         return ResponseEntity
                 .status(errorResponse.getStatus())
