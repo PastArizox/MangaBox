@@ -5,6 +5,8 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.List;
@@ -15,7 +17,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
+import com.mangabox.server.dto.PatchUserRequest;
 import com.mangabox.server.entity.User;
 import com.mangabox.server.exception.UserNotFoundException;
 import com.mangabox.server.repository.UserRepository;
@@ -25,6 +29,9 @@ public class UserServiceTest {
 
     @Mock
     private UserRepository userRepository;
+
+    @Mock
+    private PasswordEncoder passwordEncoder;
 
     @InjectMocks
     private UserService userService;
@@ -92,6 +99,71 @@ public class UserServiceTest {
         assertEquals("toto", result.get(0).getUsername());
         assertEquals(2L, result.get(1).getId());
         assertEquals("tata", result.get(1).getUsername());
+    }
+
+    @Test
+    public void testPatchUser_shouldReturnPatchedUser() {
+        User user = new User();
+        user.setId(1L);
+        user.setUsername("toto");
+
+        PatchUserRequest request = new PatchUserRequest();
+        request.setUsername("tata");
+        request.setPassword("mockedPassword");
+
+        when(passwordEncoder.encode(anyString())).thenReturn("encodedPassword");
+        when(userRepository.findById(anyLong())).thenReturn(Optional.of(user));
+
+        User patchedUser = userService.patch(1L, request);
+
+        assertEquals("tata", patchedUser.getUsername());
+        assertEquals("encodedPassword", patchedUser.getPassword());
+
+        verify(userRepository, times(1)).save(user);
+        verify(passwordEncoder, times(1)).encode("mockedPassword");
+    }
+
+    @Test
+    public void testPatchUser_shouldReturnPatchedUserWithOnlyNewUsername() {
+        User user = new User();
+        user.setId(1L);
+        user.setUsername("toto");
+        user.setPassword("mockedPassword");
+
+        PatchUserRequest request = new PatchUserRequest();
+        request.setUsername("tata");
+
+        when(userRepository.findById(anyLong())).thenReturn(Optional.of(user));
+
+        User patchedUser = userService.patch(1L, request);
+
+        assertEquals("tata", patchedUser.getUsername());
+        assertEquals("mockedPassword", patchedUser.getPassword());
+
+        verify(userRepository, times(1)).save(user);
+        verify(passwordEncoder, times(0)).encode("mockedPassword");
+    }
+
+    @Test
+    public void testPatchUser_shouldReturnPatchedUserWithOnlyNewPassword() {
+        User user = new User();
+        user.setId(1L);
+        user.setUsername("toto");
+        user.setPassword("mockedPassword");
+
+        PatchUserRequest request = new PatchUserRequest();
+        request.setPassword("newPassword");
+
+        when(passwordEncoder.encode(anyString())).thenReturn("encodedPassword");
+        when(userRepository.findById(anyLong())).thenReturn(Optional.of(user));
+
+        User patchedUser = userService.patch(1L, request);
+
+        assertEquals("toto", patchedUser.getUsername());
+        assertEquals("encodedPassword", patchedUser.getPassword());
+
+        verify(userRepository, times(1)).save(user);
+        verify(passwordEncoder, times(1)).encode("newPassword");
     }
 
 }
