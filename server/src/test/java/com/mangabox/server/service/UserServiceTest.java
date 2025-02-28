@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
 import java.util.List;
@@ -48,6 +49,28 @@ public class UserServiceTest {
         when(userRepository.findById(anyLong())).thenReturn(Optional.empty());
 
         assertThrows(UserNotFoundException.class, () -> userService.get(1L));
+    }
+
+    @Test
+    public void testGetUserByUsername_shouldReturnUser() {
+        User user = new User();
+        user.setId(1L);
+        user.setUsername("toto");
+
+        when(userRepository.findByUsername(anyString())).thenReturn(Optional.of(user));
+
+        User result = userService.get("toto");
+
+        assertNotNull(result);
+        assertEquals("toto", user.getUsername());
+        assertEquals(1L, user.getId());
+    }
+
+    @Test
+    public void testGetUserByUsername_shouldThrowUserNotFoundException() {
+        when(userRepository.findByUsername(anyString())).thenReturn(Optional.empty());
+
+        assertThrows(UserNotFoundException.class, () -> userService.get("toto"));
     }
 
     @Test
