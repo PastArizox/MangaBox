@@ -1,4 +1,4 @@
-package com.mangabox.server.security;
+package com.mangabox.server.security.service;
 
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import com.mangabox.server.entity.User;
 import com.mangabox.server.repository.UserRepository;
+import com.mangabox.server.security.model.CustomUserDetails;
 
 import lombok.RequiredArgsConstructor;
 

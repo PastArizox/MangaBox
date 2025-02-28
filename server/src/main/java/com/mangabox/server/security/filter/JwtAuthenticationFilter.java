@@ -1,4 +1,4 @@
-package com.mangabox.server.security;
+package com.mangabox.server.security.filter;
 
 import java.io.IOException;
 
@@ -11,6 +11,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.mangabox.server.exception.InvalidTokenException;
+import com.mangabox.server.security.service.CustomUserDetailsService;
+import com.mangabox.server.security.util.JwtUtils;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

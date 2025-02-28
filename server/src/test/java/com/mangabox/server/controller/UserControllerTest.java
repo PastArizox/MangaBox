@@ -19,8 +19,8 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import com.mangabox.server.entity.User;
 import com.mangabox.server.exception.UserNotFoundException;
-import com.mangabox.server.security.CustomUserDetailsService;
-import com.mangabox.server.security.JwtUtils;
+import com.mangabox.server.security.service.CustomUserDetailsService;
+import com.mangabox.server.security.util.JwtUtils;
 import com.mangabox.server.service.UserService;
 
 @WebMvcTest(UserController.class)

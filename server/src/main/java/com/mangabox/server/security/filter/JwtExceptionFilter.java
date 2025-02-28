@@ -1,4 +1,4 @@
-package com.mangabox.server.security;
+package com.mangabox.server.security.filter;
 
 import java.io.IOException;
 

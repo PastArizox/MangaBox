@@ -1,4 +1,4 @@
-package com.mangabox.server.security;
+package com.mangabox.server.security.model;
 
 import java.util.Collection;
 import java.util.Collections;

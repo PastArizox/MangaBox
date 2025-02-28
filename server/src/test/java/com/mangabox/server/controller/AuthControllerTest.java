@@ -21,8 +21,8 @@ import com.mangabox.server.dto.AuthResponse;
 import com.mangabox.server.dto.LoginRequest;
 import com.mangabox.server.dto.RegisterRequest;
 import com.mangabox.server.exception.UserAlreadyExistsException;
-import com.mangabox.server.security.CustomUserDetailsService;
-import com.mangabox.server.security.JwtUtils;
+import com.mangabox.server.security.service.CustomUserDetailsService;
+import com.mangabox.server.security.util.JwtUtils;
 import com.mangabox.server.service.AuthService;
 
 @WebMvcTest(AuthController.class)

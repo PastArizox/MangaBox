@@ -26,9 +26,9 @@ import com.mangabox.server.dto.RegisterRequest;
 import com.mangabox.server.entity.User;
 import com.mangabox.server.exception.UserAlreadyExistsException;
 import com.mangabox.server.repository.UserRepository;
-import com.mangabox.server.security.CustomAuthenticationManager;
-import com.mangabox.server.security.CustomUserDetails;
-import com.mangabox.server.security.JwtUtils;
+import com.mangabox.server.security.config.CustomAuthenticationManager;
+import com.mangabox.server.security.model.CustomUserDetails;
+import com.mangabox.server.security.util.JwtUtils;
 
 @ExtendWith(MockitoExtension.class)
 public class AuthServiceTest {

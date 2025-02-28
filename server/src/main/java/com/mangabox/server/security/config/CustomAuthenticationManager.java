@@ -1,4 +1,4 @@
-package com.mangabox.server.security;
+package com.mangabox.server.security.config;
 
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
