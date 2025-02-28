@@ -51,6 +51,8 @@ The API will be available at **`http://localhost:8080`**.
 | Method | Endpoint             | Description              | Security |
 |--------|----------------------|--------------------------|----------|
 | POST   | `/api/auth/register` | User registration        | Public   |
+| GET    | `/api/users/`        | Get list of users        | Private  |
+| GET    | `/api/users/{id}`    | Get user                 | Private  |
 
 
 
