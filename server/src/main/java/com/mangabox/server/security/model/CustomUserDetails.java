@@ -22,6 +22,10 @@ public class CustomUserDetails implements UserDetails {
         return Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER"));
     }
 
+    public Long getId() {
+        return user.getId();
+    }
+
     @Override
     public String getPassword() {
         return user.getPassword();
@@ -55,4 +59,5 @@ public class CustomUserDetails implements UserDetails {
     public User getUser() {
         return user;
     }
+
 }

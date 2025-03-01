@@ -1,8 +1,11 @@
 package com.mangabox.server.controller;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -14,11 +17,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.mangabox.server.dto.PatchUserRequest;
 import com.mangabox.server.entity.User;
 import com.mangabox.server.exception.UserNotFoundException;
+import com.mangabox.server.security.model.CustomUserDetails;
 import com.mangabox.server.security.service.CustomUserDetailsService;
 import com.mangabox.server.security.util.JwtUtils;
 import com.mangabox.server.service.UserService;
@@ -38,6 +47,9 @@ public class UserControllerTest {
 
     @MockitoBean
     private UserService userService;
+
+    @Autowired
+    private ObjectMapper objectMapper;
 
     @Test
     public void testGetUser_shouldReturn200AndUserResponse() throws Exception {
@@ -103,6 +115,61 @@ public class UserControllerTest {
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.length()").value(0));
+    }
+
+    @Test
+    public void testPatchUser_shouldReturn200AndUserResponse() throws Exception {
+        PatchUserRequest request = new PatchUserRequest();
+        request.setUsername("toto");
+        request.setPassword("mockedPassword");
+
+        User user = new User();
+        user.setId(1L);
+        user.setUsername("toto");
+        user.setPassword("mockedPassword");
+
+        CustomUserDetails authenticatedUser = new CustomUserDetails(user);
+
+        // Simulate authenticated user in security context
+        SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
+        securityContext.setAuthentication(new UsernamePasswordAuthenticationToken(authenticatedUser, null));
+        SecurityContextHolder.setContext(securityContext);
+
+        when(userService.patch(anyLong(), any(PatchUserRequest.class))).thenReturn(user);
+
+        mockMvc.perform(patch("/api/users/1")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request))
+                .with(user(authenticatedUser)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.username").value("toto"));
+
+        // Clean context after test
+        SecurityContextHolder.clearContext();
+    }
+
+    @Test
+    public void testPatchUser_shouldReturn403WhenUserIsNotAuthorized() throws Exception {
+        PatchUserRequest request = new PatchUserRequest();
+        request.setUsername("toto");
+
+        User user = new User();
+        user.setId(2L);
+        user.setUsername("tata");
+
+        CustomUserDetails authenticatedUser = new CustomUserDetails(user);
+
+        SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
+        securityContext.setAuthentication(new UsernamePasswordAuthenticationToken(authenticatedUser, null));
+        SecurityContextHolder.setContext(securityContext);
+
+        mockMvc.perform(patch("/api/users/1")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request))
+                .with(user(authenticatedUser)))
+                .andExpect(status().isForbidden());
+
+        SecurityContextHolder.clearContext();
     }
 
 }

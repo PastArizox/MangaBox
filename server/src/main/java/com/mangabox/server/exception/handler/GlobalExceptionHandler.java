@@ -8,6 +8,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import com.mangabox.server.exception.UnauthorizedActionException;
 import com.mangabox.server.exception.UserAlreadyExistsException;
 import com.mangabox.server.exception.UserNotFoundException;
 
@@ -50,6 +51,15 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(UserNotFoundException.class)
     public ResponseEntity<ApiError> handleUserNotFoundException(UserNotFoundException ex) {
         ApiError errorResponse = new ApiError(HttpStatus.NOT_FOUND, ex.getMessage());
+
+        return ResponseEntity
+                .status(errorResponse.getStatus())
+                .body(errorResponse);
+    }
+
+    @ExceptionHandler(UnauthorizedActionException.class)
+    public ResponseEntity<ApiError> handleUnauthorizedActionException(UnauthorizedActionException ex) {
+        ApiError errorResponse = new ApiError(HttpStatus.FORBIDDEN, ex.getMessage());
 
         return ResponseEntity
                 .status(errorResponse.getStatus())
