@@ -58,4 +58,10 @@ public class UserService {
         return user;
     }
 
+    public void delete(Long id) {
+        User user = this.get(id);
+
+        userRepository.delete(user);
+    }
+
 }

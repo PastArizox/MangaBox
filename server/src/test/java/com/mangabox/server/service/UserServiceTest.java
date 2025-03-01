@@ -166,4 +166,24 @@ public class UserServiceTest {
         verify(passwordEncoder, times(1)).encode("newPassword");
     }
 
+    @Test
+    public void testDeleteUser_shouldDeleteUser() {
+        User user = new User();
+        user.setId(1L);
+        user.setUsername("toto");
+
+        when(userRepository.findById(anyLong())).thenReturn(Optional.of(user));
+
+        userService.delete(1L);
+
+        verify(userRepository, times(1)).delete(user);
+    }
+
+    @Test
+    public void testDeleteUser_shouldThrowUserNotFoundException() {
+        when(userRepository.findById(anyLong())).thenReturn(Optional.empty());
+
+        assertThrows(UserNotFoundException.class, () -> userService.delete(1L));
+    }
+
 }
