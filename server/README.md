@@ -51,10 +51,15 @@ The API will be available at **`http://localhost:8080`**.
 | Method | Endpoint             | Description              | Security |
 |--------|----------------------|--------------------------|----------|
 | POST   | `/api/auth/register` | User registration        | Public   |
+| POST   | `/api/auth/login`    | User login               | Public   |
+
+### **Users**
+
+| Method | Endpoint             | Description              | Security |
+|--------|----------------------|--------------------------|----------|
 | GET    | `/api/users/`        | Get list of users        | Private  |
 | GET    | `/api/users/{id}`    | Get user                 | Private  |
-
-
+| PATCH  | `/api/users/{id}`    | Update user              | Private  |
 
 ## **Running Tests**
 
@@ -90,7 +95,7 @@ This project is licensed under the **MIT License**.
 
 - [x] Create user account
 - [x] Connect to user account
-- [ ] Modify user account
+- [x] Modify user account
 - [ ] Delete user account
 - [ ] Password recovery
 
