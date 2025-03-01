@@ -1,4 +1,4 @@
-package com.mangabox.server.security;
+package com.mangabox.server.security.model;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -20,6 +20,10 @@ public class CustomUserDetails implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER"));
+    }
+
+    public Long getId() {
+        return user.getId();
     }
 
     @Override
@@ -55,4 +59,5 @@ public class CustomUserDetails implements UserDetails {
     public User getUser() {
         return user;
     }
+
 }

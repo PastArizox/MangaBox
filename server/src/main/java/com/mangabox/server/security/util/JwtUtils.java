@@ -1,4 +1,4 @@
-package com.mangabox.server.security;
+package com.mangabox.server.security.util;
 
 import java.util.Date;
 

@@ -1,4 +1,4 @@
-package com.mangabox.server.exception;
+package com.mangabox.server.exception.handler;
 
 import java.time.LocalDateTime;
 

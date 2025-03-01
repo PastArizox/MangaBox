@@ -21,6 +21,8 @@ import com.mangabox.server.dto.AuthResponse;
 import com.mangabox.server.dto.LoginRequest;
 import com.mangabox.server.dto.RegisterRequest;
 import com.mangabox.server.exception.UserAlreadyExistsException;
+import com.mangabox.server.security.service.CustomUserDetailsService;
+import com.mangabox.server.security.util.JwtUtils;
 import com.mangabox.server.service.AuthService;
 
 @WebMvcTest(AuthController.class)
@@ -32,6 +34,12 @@ public class AuthControllerTest {
 
     @MockitoBean
     private AuthService authService;
+
+    @MockitoBean
+    private JwtUtils jwtUtils;
+
+    @MockitoBean
+    private CustomUserDetailsService userDetailsService;
 
     @Autowired
     private ObjectMapper objectMapper; // Pour convertir les objets en JSON
