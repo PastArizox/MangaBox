@@ -2,8 +2,13 @@ package com.mangabox.server.controller;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -170,6 +175,45 @@ public class UserControllerTest {
                 .andExpect(status().isForbidden());
 
         SecurityContextHolder.clearContext();
+    }
+
+    @Test
+    public void testDeleteUser_shouldReturn204() throws Exception {
+        User user = new User();
+        user.setId(1L);
+        user.setUsername("toto");
+
+        CustomUserDetails authenticatedUser = new CustomUserDetails(user);
+
+        doNothing().when(userService).delete(anyLong());
+
+        SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
+        securityContext.setAuthentication(new UsernamePasswordAuthenticationToken(authenticatedUser, null));
+        SecurityContextHolder.setContext(securityContext);
+
+        mockMvc.perform(delete("/api/users/1")
+                .with(user(authenticatedUser)))
+                .andExpect(status().isNoContent());
+
+        verify(userService, times(1)).delete(1L);
+    }
+
+    @Test
+    public void testDeleteUser_shouldReturn403WhenNotAuthorized() throws Exception {
+        User user = new User();
+        user.setId(2L);
+
+        CustomUserDetails authenticatedUser = new CustomUserDetails(user);
+
+        SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
+        securityContext.setAuthentication(new UsernamePasswordAuthenticationToken(authenticatedUser, null));
+        SecurityContextHolder.setContext(securityContext);
+
+        mockMvc.perform(delete("/api/users/1")
+                .with(user(authenticatedUser)))
+                .andExpect(status().isForbidden());
+
+        verify(userService, never()).delete(anyLong());
     }
 
 }

@@ -60,6 +60,7 @@ The API will be available at **`http://localhost:8080`**.
 | GET    | `/api/users/`        | Get list of users        | Private  |
 | GET    | `/api/users/{id}`    | Get user                 | Private  |
 | PATCH  | `/api/users/{id}`    | Update user              | Private  |
+| DELETE | `/api/users/{id}`    | Delete user              | Private  |
 
 ## **Running Tests**
 
@@ -96,7 +97,7 @@ This project is licensed under the **MIT License**.
 - [x] Create user account
 - [x] Connect to user account
 - [x] Modify user account
-- [ ] Delete user account
+- [x] Delete user account
 - [ ] Password recovery
 
 **Developed with ❤️ by [PastArizox](https://github.com/PastArizox)**

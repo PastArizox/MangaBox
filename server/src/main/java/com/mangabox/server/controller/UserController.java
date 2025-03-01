@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -63,6 +64,19 @@ public class UserController {
         UserResponse response = new UserResponse(user);
 
         return ResponseEntity.ok(response);
+    }
+
+    @DeleteMapping(value = "/{id}")
+    public ResponseEntity<Void> delete(
+            @PathVariable Long id,
+            @AuthenticationPrincipal CustomUserDetails authenticatedUser) {
+
+        if (!authenticatedUser.getId().equals(id))
+            throw new UnauthorizedActionException("You are not allowed to delete this user.");
+
+        userService.delete(id);
+
+        return ResponseEntity.noContent().build();
     }
 
 }
